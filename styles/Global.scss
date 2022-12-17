@@ -1,0 +1,26 @@
+@import "./Calendrier.scss";
+@import "./Cuisine.scss";
+@import "./components/Backdrop.scss";
+@import "./components/Modal.scss";
+
+body {
+	margin: 0;
+	background-color: #282c34;
+	font-family: Nexa;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+//Colors
+
+.rose {
+	background-color: #f9ceee !important;
+}
+
+.bleu {
+	background-color: #9adcff !important;
+}
+
+.orange {
+	background-color: #ffc898 !important;
+}

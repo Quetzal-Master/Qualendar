@@ -1,0 +1,129 @@
+@import "./fonts/Fonts.scss";
+
+.calendrier {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	overflow: hidden;
+	z-index: 1;
+	position: relative;
+	.params {
+		position: absolute;
+		z-index: 2;
+		top: 2vw;
+		right: 2vw;
+		font-size: 3vh;
+		color: white;
+		cursor: pointer;
+	}
+	.calendrierHeader {
+		height: 10%;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		img {
+			position: absolute;
+			z-index: 1;
+		}
+		h1 {
+			font-weight: bold;
+			color: #fff;
+			text-transform: uppercase;
+			font-size: 6vh;
+			position: relative;
+			z-index: 2;
+		}
+		h3 {
+			font-weight: bold;
+			color: #fff;
+			text-transform: uppercase;
+			align-self: baseline;
+			font-size: 2vh;
+			position: relative;
+			z-index: 2;
+		}
+	}
+	.calendrierBody {
+		height: 90%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		.jour {
+			display: flex;
+			align-items: center;
+			background-color: #f9f9f9;
+			border-radius: 25px;
+			margin: 0 10px;
+			height: 2.5%;
+
+			.jourContainer {
+				display: flex;
+				flex-direction: row;
+				width: 95%;
+				height: 100%;
+				align-items: center;
+				.jourInfos {
+					display: flex;
+					justify-content: start;
+					align-items: center;
+					font-family: "Averta Std";
+					font-weight: 600;
+					width: 10%;
+					padding: 0 10px;
+					margin-right: 3%;
+					p:first-child {
+						margin-right: 10%;
+					}
+				}
+				.vacances {
+					background-color: #faf4b7;
+					height: 100%;
+					border-top-left-radius: 25px;
+					border-bottom-left-radius: 25px;
+				}
+				.jourEvents {
+					width: 88%;
+					height: 80%;
+					display: flex;
+					flex-direction: row;
+					gap: 3%;
+
+					div {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						width: 15%;
+						border-radius: 25px;
+					}
+
+					div:nth-child(1) {
+						background-color: red;
+					}
+
+					div:nth-child(2) {
+						background-color: blue;
+					}
+
+					div:nth-child(3) {
+						background-color: green;
+					}
+				}
+			}
+		}
+		.dimanche {
+			background-color: #cdf0ea;
+
+			.jourInfos {
+				color: #ff8080;
+			}
+		}
+
+		.addEvent {
+			width: 15%;
+			height: 100%;
+			border-top-right-radius: 25px;
+			border-bottom-right-radius: 25px;
+		}
+	}
+}

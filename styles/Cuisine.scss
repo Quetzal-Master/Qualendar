@@ -1,0 +1,121 @@
+@import "./fonts/Fonts.scss";
+
+.cuisine {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	background: rgb(249, 251, 253);
+
+	.cuisineHome {
+		position: absolute;
+		//	margin: 10%;
+		top: 0;
+		font-family: Gilroy;
+		display: flex;
+		flex-direction: column;
+
+		margin: 0 10%;
+		height: 90%;
+		width: 80%;
+		position: absolute;
+		top: 0;
+		.cuisineHomeHeader {
+			position: relative;
+			text-transform: capitalize;
+			margin: 10% 0 5% 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 800;
+			font-size: 80px;
+		}
+
+		.cuisineResearchWrapper {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			font-size: 60px;
+			.cuisineResearch {
+				position: relative;
+				background: #fff;
+				color: #dbdfeb;
+				font-size: 60px;
+				border-radius: 30px;
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+				padding: 20px 25px;
+				width: 60%;
+
+				input {
+					background: transparent;
+					color: #dbdfeb;
+					font-family: Gilroy;
+					border: none;
+					font-size: 30px;
+					padding: 20px 0px;
+					width: 80%;
+
+					&:focus {
+						outline: none;
+						color: #000;
+					}
+				}
+			}
+
+			.cuisineResearchType {
+				background: #fff;
+				border-radius: 15px;
+				padding: 15px;
+			}
+
+			.cuisineResearchType-selected {
+				background: #e5f5ee;
+				border-radius: 15px;
+				padding: 15px;
+			}
+		}
+
+		.keyboard {
+			display: block;
+			background: red;
+		}
+	}
+
+	.cuisineSave {
+		height: 90vh;
+		width: 100vw;
+		background: green;
+		position: absolute;
+		top: 0;
+	}
+
+	.cuisineProfil {
+		height: 90vh;
+		width: 100vw;
+		background: blue;
+		position: absolute;
+		top: 0;
+	}
+
+	.cuisineFooter {
+		position: absolute;
+		width: 100%;
+		height: 10%;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		bottom: 0;
+		font-size: 5vh;
+
+		.navIcon {
+			color: #dfdfdf;
+			transition: color 0.7s ease;
+			cursor: pointer;
+		}
+		.selected {
+			color: #000;
+		}
+	}
+}
