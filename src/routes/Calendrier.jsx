@@ -1,7 +1,7 @@
-import React, { Component, useState, useEffect } from "react";
-import { RiHomeGearFill, RiLogoutBoxLine, RiLoginBoxLine  } from "react-icons/ri";
+import React, { useState, useEffect } from "react";
+import { RiHomeGearFill, RiLoginBoxLine  } from "react-icons/ri";
 import getUnsplashImage from "../hooks/ImageUnsplash";
-import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Modal from "../components/Modal";
 import ApiCalendar from 'react-google-calendar-api';
 
@@ -18,8 +18,6 @@ const config = {
 	]
 }
 	  
-const apiCalendar = new ApiCalendar(config)
-
 const EventList = (events, date, modalOpen, close, open) => {
 	// return events.map((evenement, i) => {
 	// 	if (evenement.date == date) {
@@ -39,16 +37,45 @@ const EventList = (events, date, modalOpen, close, open) => {
 	return [];
 };
 
-const Calendrier = () => {
+function Calendrier () {
+
+	const [apiCalendar, setApiCalendar] = useState(null)
+
+	useEffect(() => {
+		setApiCalendar(new ApiCalendar(config));
+		
+	  }, []);
+
+	  useEffect(() => {
+		if(apiCalendar != null){
+			apiCalendar.onLoadCallback = () => {
+				apiCalendar.setCalendar("a6950e1b642d8663865fd2351d5107fae9e1537514f7e9d8b301364aa53d9568@group.calendar.google.com");
+				
+				// apiCalendar.handleAuthClick();
+				// apiCalendar.listUpcomingEvents(10).then(({ result }) => {
+				// 		console.log(result.items);
+				// });
+
+			};
+		}
+		
+	  }, [apiCalendar])
 	
 	function handleLoginLogout() {
         if (!isLog) {
-          	apiCalendar.handleAuthClick()
+			//console.log(apiCalendar.tokenClient.requestAccessToken({ prompt: '' }));
+			//console.log(apiCalendar.handleAuthClick());
+			console.log(apiCalendar.tokenClient);
+			console.log(apiCalendar.sign);
+			
+			setIsLog(true);
         } else {
+			apiCalendar.listUpcomingEvents(10).then(({ result }) => {
+				console.log(result.items);
+			});
 			setmodalType(1);
 			modalOpen ? close() : open();
         }
-		setIsLog(!isLog);
     }
 
 	
@@ -97,11 +124,11 @@ const Calendrier = () => {
 	const [month, setMonth] = React.useState(current.getMonth());
 	const [year, setYear] = React.useState(current.getFullYear());
 
-	console.log(monthNames[month]);
+	//console.log(monthNames[month]);
 
 	var unsplashimg = getUnsplashImage(monthNamesEn[month]);
 
-	console.log(unsplashimg);
+	//console.log(unsplashimg);
 	var firstOfMonth = new Date(current.getFullYear(), current.getMonth(), 1);
 	var divJours = [];
 	//Generation d'evenement aléatoire
@@ -188,7 +215,7 @@ const Calendrier = () => {
 				onClick={(e) => onClickDivJour(e)}
 				key={i}
 				className={`jour ${
-					daysName[(firstOfMonth.getDay() - 1 + i) % 7] == "Dimanche"
+					daysName[(firstOfMonth.getDay() - 1 + i) % 7] === "Dimanche"
 						? "dimanche"
 						: ""
 				}`}
@@ -237,7 +264,7 @@ const Calendrier = () => {
 		console.log(touchStart - touchEnd);
 		if (touchStart - touchEnd > 250) {
 			// do your stuff here for left swipe
-			if (month == 11) {
+			if (month === 11) {
 				setYear(year + 1);
 			}
 			setMonth((month + 1) % 12);
@@ -246,7 +273,7 @@ const Calendrier = () => {
 
 		if (touchStart - touchEnd < -250) {
 			// do your stuff here for right swipe
-			if (month == 0) {
+			if (month === 0) {
 				setYear(year - 1);
 				setMonth(11);
 			} else {

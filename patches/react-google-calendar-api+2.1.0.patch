@@ -1,0 +1,28 @@
+diff --git a/node_modules/react-google-calendar-api/dist/ApiCalendar.js b/node_modules/react-google-calendar-api/dist/ApiCalendar.js
+index 1043911..3ade95e 100644
+--- a/node_modules/react-google-calendar-api/dist/ApiCalendar.js
++++ b/node_modules/react-google-calendar-api/dist/ApiCalendar.js
+@@ -97,11 +97,20 @@ var ApiCalendar = class {
+         client_id: this.config.clientId,
+         scope: this.config.scope,
+         prompt: "",
+-        callback: () => {
++        callback: (tokenResponse) => {
++          if (tokenResponse && tokenResponse.access_token) {
++            if (google.accounts.oauth2.hasGrantedAnyScope(tokenResponse,
++                'https://www.googleapis.com/auth/calendar')) {
++                  console.log("connecter avec tout les droits calendriers");
++            }
++          } else {
++            console.log("error");
++          }
+         }
+       });
+-    };
+-  }
++  };
++}
++
+   handleAuthClick() {
+     if (gapi && this.tokenClient) {
+       if (gapi.client.getToken() === null) {
