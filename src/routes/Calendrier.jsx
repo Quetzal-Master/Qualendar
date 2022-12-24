@@ -1,9 +1,15 @@
-import React, { Component, useState, useEffect } from "react";
-import { RiHomeGearFill, RiLogoutBoxLine, RiLoginBoxLine  } from "react-icons/ri";
+import React, { useState, useEffect } from "react";
+import { RiHomeGearFill, RiLoginBoxLine  } from "react-icons/ri";
+import { BsFillPersonXFill } from "react-icons/bs";
 import getUnsplashImage from "../hooks/ImageUnsplash";
-import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Modal from "../components/Modal";
 import ApiCalendar from 'react-google-calendar-api';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import QuentinPIC from "../styles/images/QuentinFull.jpg";
+import JordanPIC from "../styles/images/JordanFull.jpg";
+import MamanPIC from "../styles/images/mamanFull.jpg";
+import PapaPIC from "../styles/images/papaFull.jpg";
 
 const calendarID = process.env.REACT_APP_CALENDAR_ID;
 const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
@@ -17,38 +23,95 @@ const config = {
 		"https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"
 	]
 }
+
+
+
+const apiCalendar = new ApiCalendar(config);
+
+
+function Calendrier () {
+
+	const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
+
+	const [monthEvents, setMonthEvents] = useState([]);
 	  
-const apiCalendar = new ApiCalendar(config)
+	const EventList = (date) => {
+		return monthEvents.map((evenement, i) => {
+			console.log(evenement.creator.email);
+			let profilPic = null;
+			let color = null;
+			switch(evenement.creator.email) {
+				case "qhattstadt@gmail.com" : 
+					profilPic = <img className="profilPic" src ={QuentinPIC} />;
+					color = "bleu";
+					break;
+				case "jhattstadt@gmail.com" : 
+					profilPic = <img className="profilPic" src ={JordanPIC} />;
+					color = "orange";
+					break;
+				case "jasmine.hattstadt@gmail.com" : 
+					profilPic = <img className="profilPic" src ={MamanPIC} />;
+					color = "rose";
+					break;
+				case "thierry.hattstadt@gmail.com" : 
+					profilPic = <img className="profilPic" src ={PapaPIC} />;
+					color = "jaune";
+					break;
+				default: 
+					profilPic = <BsFillPersonXFill/>;
+					break;
+				
+			}
+			const tmpDate = new Date(evenement.start.dateTime);
+			if (tmpDate.getDate() == date) {
+				console.log("SIUUUUU")
+				return (
+					<motion.div
+						whileHover={{ scale: 1.1 }}
+						whileTap={{ scale: 0.9 }}
+						onClick={() => {}}
+						key={i}
+						className={`event ${color}`}// ${evenement.couleur}`}
+					>
+						{profilPic}
+						<p>{evenement.summary}</p>
+					</motion.div>
+				);
+			}
+		});
+	};
 
-const EventList = (events, date, modalOpen, close, open) => {
-	// return events.map((evenement, i) => {
-	// 	if (evenement.date == date) {
-	// 		return (
-	// 			<motion.div
-	// 				whileHover={{ scale: 1.1 }}
-	// 				whileTap={{ scale: 0.9 }}
-	// 				onClick={() => {}}
-	// 				key={i}
-	// 				className={`event ${evenement.couleur}`}
-	// 			>
-	// 				{evenement.titre}
-	// 			</motion.div>
-	// 		);
-	// 	}
-	// });
-	return [];
-};
+	const [tmpLog, setTmpLog] = useState(false);
 
-const Calendrier = () => {
+	useEffect(() => {
+	if(apiCalendar != null){
+		apiCalendar.onLoadCallback = () => {
+			apiCalendar.setCalendar("a6950e1b642d8663865fd2351d5107fae9e1537514f7e9d8b301364aa53d9568@group.calendar.google.com");
+			setAccessToken("");
+			// if(accessToken !== "") {
+			// 	apiCalendar.listUpcomingEvents(10).then(({ result }) => {
+			// 		console.log(result.items);
+			// 	});
+			// } else {
+			// 	console.log("You arnt connected yet");
+			// }
+		};
+	}
+	
+	}, [apiCalendar])
+
 	
 	function handleLoginLogout() {
-        if (!isLog) {
-          	apiCalendar.handleAuthClick()
+        if (tmpLog === false) {
+				apiCalendar.tokenClient.requestAccessToken({ prompt: 'consent' });
+				setTmpLog(true);
         } else {
+			apiCalendar.listUpcomingEvents(10).then(({ result }) => {
+				console.log(result.items);
+			});
 			setmodalType(1);
 			modalOpen ? close() : open();
         }
-		setIsLog(!isLog);
     }
 
 	
@@ -94,33 +157,30 @@ const Calendrier = () => {
 		"Samedi",
 		"Dimanche",
 	];
-	const [month, setMonth] = React.useState(current.getMonth());
-	const [year, setYear] = React.useState(current.getFullYear());
-
-	console.log(monthNames[month]);
+	const [month, setMonth] = useState(current.getMonth());
+	const [year, setYear] = useState(current.getFullYear());
 
 	var unsplashimg = getUnsplashImage(monthNamesEn[month]);
 
-	console.log(unsplashimg);
 	var firstOfMonth = new Date(current.getFullYear(), current.getMonth(), 1);
 	var divJours = [];
-	//Generation d'evenement aléatoire
+
 	const [selectedId, setSelectedId] = useState(null);
 
-	// <AnimatePresence>
-	// {selectedId && (
-	//     <motion.div  layoutId={selectedId} >
-	//             <div className="jourContainer">
-	//                 <div className={`jourInfos  ${(i <= 12)?"vacances":""}`}>
-	//                     <p>{i+1}</p><p>{daysName[((firstOfMonth.getDay()-1)+i)%7]}</p>
-	//                 </div>
-	//                 <div className="jourEvents">{data && EventList(data, ((i+1)+"/"+month+"/"+year))}</div>
-	//             </div>
-	//             <div className="addEvent">
-	//             </div>
-	//     </motion.div>
-	// )}
-	// </AnimatePresence>
+	<AnimatePresence>
+	{selectedId && (
+	    <motion.div  layoutId={selectedId} >
+	            <div className="jourContainer">
+	                <div className={`jourInfos  ${(i <= 12)?"vacances":""}`}>
+	                    <p>{i+1}</p><p>{daysName[((firstOfMonth.getDay()-1)+i)%7]}</p>
+	                </div>
+	                <div className="jourEvents">{monthEvents && EventList(i+1)}</div>
+	            </div>
+	            <div className="addEvent">
+	            </div>
+	    </motion.div>
+	)}
+	</AnimatePresence>
 	const min = -1;
 	const max = 3;
 	const rand = min + Math.random() * (max - min);
@@ -168,16 +228,6 @@ const Calendrier = () => {
 	};
 
 	for (var i = 0; i < getDaysInMonth(current.getFullYear(), month + 1); i++) {
-		const min = -1;
-		const max = 3;
-		const rand = min + Math.random() * (max - min);
-		for (var j = 0; j < rand; j++) {
-			events.push(
-				<div key={j + 1} className="event">
-					Evenement {j + 1}
-				</div>
-			);
-		}
 		var monthDate = month < 10 ? "0" + (month + 1) : month + 1;
 		divJours.push(
 			<motion.div
@@ -188,7 +238,7 @@ const Calendrier = () => {
 				onClick={(e) => onClickDivJour(e)}
 				key={i}
 				className={`jour ${
-					daysName[(firstOfMonth.getDay() - 1 + i) % 7] == "Dimanche"
+					daysName[(firstOfMonth.getDay() - 1 + i) % 7] === "Dimanche"
 						? "dimanche"
 						: ""
 				}`}
@@ -198,15 +248,11 @@ const Calendrier = () => {
 						<p>{i + 1}</p>
 						<p>{daysName[(firstOfMonth.getDay() - 1 + i) % 7]}</p>
 					</div>
-					{/* <div className={"jourEvents"}>
+					<div className={"jourEvents"}>
 						{EventList(
-							data,
-							i + 1 + "/" + monthDate + "/" + year,
-							modalOpen,
-							close,
-							open
+							i + 1
 						)}
-					</div> */}
+					</div>
 				</motion.div>
 				<motion.div
 					className="addEvent"
@@ -217,8 +263,8 @@ const Calendrier = () => {
 				></motion.div>
 			</motion.div>
 		);
-		events = [];
 	}
+
 
 	//Partie swipe change month
 
@@ -237,7 +283,7 @@ const Calendrier = () => {
 		console.log(touchStart - touchEnd);
 		if (touchStart - touchEnd > 250) {
 			// do your stuff here for left swipe
-			if (month == 11) {
+			if (month === 11) {
 				setYear(year + 1);
 			}
 			setMonth((month + 1) % 12);
@@ -246,7 +292,7 @@ const Calendrier = () => {
 
 		if (touchStart - touchEnd < -250) {
 			// do your stuff here for right swipe
-			if (month == 0) {
+			if (month === 0) {
 				setYear(year - 1);
 				setMonth(11);
 			} else {
@@ -257,8 +303,24 @@ const Calendrier = () => {
 		}
 	}
 
+	useEffect(() => {
+		if(apiCalendar != null && apiCalendar.sign){
+			const dateStart = new Date(year,month);
+			const dateEnd =  new Date(year,month, getDaysInMonth(year,month + 1));
+			console.log(dateEnd.toISOString());
+			apiCalendar.listEvents({
+				timeMin: dateStart.toISOString(),
+				timeMax: dateEnd.toISOString(),
+				showDeleted: true,
+				maxResults: 10,
+				orderBy: 'updated'
+			}).then(({ result }) => {
+			setMonthEvents(result.items);
+			});
+		}
+	}, [month, year]);
+
 	const [modalType, setmodalType] = React.useState(0);
-	const [isLog, setIsLog] = React.useState(false);
 
 	return (
 		<div className="calendrier">
@@ -279,7 +341,7 @@ const Calendrier = () => {
 					handleLoginLogout();
 				}}
 			>
-				{!isLog ? <RiLoginBoxLine /> : <RiHomeGearFill />}
+				{accessToken === "" ? <RiLoginBoxLine /> : <RiHomeGearFill />}
 			</motion.div>
 			<div
 				className="calendrierHeader"
