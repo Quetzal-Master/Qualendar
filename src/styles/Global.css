@@ -1,6 +1,10 @@
 @import url(//db.onlinewebfonts.com/c/1dc8ecd8056a5ea7aa7de1db42b5b639?family=Gilroy);
 @import url(//db.onlinewebfonts.com/c/1dc8ecd8056a5ea7aa7de1db42b5b639?family=Gilroy);
 @font-face {
+  font-family: Greycliff;
+  src: "./fonts/greycliff" format("opentype"); }
+
+@font-face {
   font-family: Nexa;
   src: "./fonts/NexaRegular" format("opentype"); }
 
@@ -109,6 +113,85 @@
       border-radius: 25px;
       margin: 0 10px;
       height: 2.5%; }
+      .calendrier .calendrierBody .jour.unselected {
+        height: 0%; }
+        .calendrier .calendrierBody .jour.unselected .jourContainer {
+          display: none; }
+      .calendrier .calendrierBody .jour .exitDetails {
+        display: none; }
+      .calendrier .calendrierBody .jour.selected {
+        height: 100%;
+        margin: 10px 10px;
+        position: relative; }
+        .calendrier .calendrierBody .jour.selected .exitDetails {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          z-index: 2;
+          color: black;
+          font-size: 30px;
+          display: flex; }
+        .calendrier .calendrierBody .jour.selected .jourContainer {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+          border-radius: 25px;
+          border-bottom-left-radius: 25px;
+          border-bottom-right-radius: 25px;
+          overflow: hidden; }
+          .calendrier .calendrierBody .jour.selected .jourContainer .jourInfos {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-family: "Averta Std";
+            font-weight: 600;
+            height: 10%;
+            width: 200vw; }
+            .calendrier .calendrierBody .jour.selected .jourContainer .jourInfos p:first-child {
+              margin-right: 10px; }
+          .calendrier .calendrierBody .jour.selected .jourContainer .vacances {
+            border-bottom-left-radius: 0px;
+            border-top-right-radius: 25px;
+            border-top-left-radius: 25px;
+            background-color: #faf4b7; }
+          .calendrier .calendrierBody .jour.selected .jourContainer .jourHeure {
+            height: 90%;
+            overflow: hidden; }
+            .calendrier .calendrierBody .jour.selected .jourContainer .jourHeure .heure {
+              height: 10%;
+              display: flex;
+              flex-direction: row;
+              align-items: center; }
+              .calendrier .calendrierBody .jour.selected .jourContainer .jourHeure .heure p {
+                margin: 0 10px;
+                font-weight: 800;
+                font-family: Arial; }
+              .calendrier .calendrierBody .jour.selected .jourContainer .jourHeure .heure .line {
+                margin: 0 10px;
+                width: 95%;
+                height: 2px;
+                background: black; }
+          .calendrier .calendrierBody .jour.selected .jourContainer .DayEvent {
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            border-radius: 10px;
+            padding: 10px;
+            justify-content: flex-start;
+            align-items: center; }
+            .calendrier .calendrierBody .jour.selected .jourContainer .DayEvent .profilPic {
+              border-radius: 50%;
+              height: 100px; }
+            .calendrier .calendrierBody .jour.selected .jourContainer .DayEvent p {
+              font-family: Gilroy;
+              font-size: 2rem;
+              margin-left: 30px; }
+        .calendrier .calendrierBody .jour.selected .addEvent {
+          display: none; }
       .calendrier .calendrierBody .jour .jourContainer {
         display: flex;
         flex-direction: row;
@@ -117,7 +200,7 @@
         align-items: center; }
         .calendrier .calendrierBody .jour .jourContainer .jourInfos {
           display: flex;
-          justify-content: start;
+          justify-content: flex-start;
           align-items: center;
           font-family: "Averta Std";
           font-weight: 600;
@@ -160,6 +243,10 @@
       height: 100%;
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px; }
+
+@font-face {
+  font-family: Greycliff;
+  src: "./fonts/greycliff" format("opentype"); }
 
 @font-face {
   font-family: Nexa;

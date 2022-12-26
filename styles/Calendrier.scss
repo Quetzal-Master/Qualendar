@@ -59,6 +59,116 @@
 			margin: 0 10px;
 			height: 2.5%;
 
+			&.unselected {
+				height: 0%;
+				.jourContainer {
+					display: none;
+				}
+			}
+
+			.exitDetails {
+				display: none;
+			}
+
+			&.selected {
+				height: 100%;
+				margin: 10px 10px;
+				position: relative;
+
+				.exitDetails {
+					position: absolute;
+					top: 10px;
+					right: 10px;
+					z-index: 2;
+					color: black;
+					font-size: 30px;
+					display: flex;
+				}
+
+				.jourContainer {
+					display: flex;
+					flex-direction: column;
+					width: 100%;
+					height: 100%;
+					align-items: center;
+					justify-content: center;
+					border-radius: 25px;
+					border-bottom-left-radius: 25px;
+					border-bottom-right-radius: 25px;
+					overflow: hidden;
+
+					.jourInfos {
+						display: flex;
+						flex-direction: row;
+						justify-content: center;
+						align-items: center;
+						font-family: "Averta Std";
+						font-weight: 600;
+						height: 10%;
+						width:  200vw;
+						p:first-child {
+							margin-right: 10px;
+						}
+					}
+					.vacances {
+						border-bottom-left-radius: 0px;
+						border-top-right-radius: 25px;
+						border-top-left-radius: 25px;
+						background-color: #faf4b7;
+					}
+					.jourHeure {
+						height: 90%;
+						overflow: hidden;
+						.heure {
+							height: 10%;
+							display: flex;
+							flex-direction: row;
+							align-items: center;
+
+							p {
+								margin: 0 10px;
+								font-weight: 800;
+								font-family: Arial;
+							}
+
+							.line {
+								margin: 0 10px;
+								width: 95%;
+								height: 2px;
+								background: black;
+							}
+						}
+					}
+					.DayEvent {
+						position: absolute;
+						display: flex;
+						flex-direction: row;
+						border-radius: 10px;
+						padding: 10px;
+						
+						
+						justify-content: flex-start;
+						align-items: center;
+
+	
+						.profilPic {
+							border-radius: 50%;
+							height: 100px;
+						}
+
+						p {
+							font-family: Gilroy;
+							font-size: 2rem;
+							margin-left: 30px;
+						}
+						
+					}
+				}
+				.addEvent {
+					display: none;
+				}
+			}
+
 			.jourContainer {
 				display: flex;
 				flex-direction: row;
@@ -69,7 +179,7 @@
 
 				.jourInfos {
 					display: flex;
-					justify-content: start;
+					justify-content: flex-start;
 					align-items: center;
 					font-family: "Averta Std";
 					font-weight: 600;

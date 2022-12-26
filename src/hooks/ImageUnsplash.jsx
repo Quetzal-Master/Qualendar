@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 
 // Hook
 function useUnsplashImage(month) {
-    console.log(month);
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [windowSize, setWindowSize] = useState({
