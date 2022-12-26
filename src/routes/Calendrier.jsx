@@ -230,7 +230,7 @@ function Calendrier () {
 	const [selectedId, setSelectedId] = useState(null);
 
 	const SelectedHandler = function(e){
-		setSelectedId(parseInt(e.target.getAttribute("data-index"), 10)); 
+		setSelectedId(parseInt(e.target.closest("[data-index]").getAttribute("data-index"), 10)); 
 	};
 
 	//Tests animations jours
@@ -264,11 +264,6 @@ function Calendrier () {
 		console.log("Open modal");
 	};
 
-	const onClickDivJour = (e) => {
-		// if(modalOpen ? close() : open()
-		console.log("Position y: " + e.clientY);
-	};
-
 	const dayClassName = (i) => {
 		let ret = " ";
 		if(daysName[(firstOfMonth.getDay() - 1 + i) % 7] === "Dimanche" || daysName[firstOfMonth.getDay() - 1] === "Dimanche") {
@@ -291,7 +286,9 @@ function Calendrier () {
 				whileTap={selectedId === null ? {scale: 0.9} : {scale: 1}}
 				variants={item}
 				layoutId={i}
-				onClick={(e) => onClickDivJour(e)}
+				
+				data-index={i}
+				onClick={(e) => selectedId !== null ? null : SelectedHandler(e)}
 				key={i}
 				className={`jour ${
 					dayClassName(i)
@@ -336,8 +333,6 @@ function Calendrier () {
 				</motion.div>
 				<motion.div
 					className="addEvent"
-					data-index={i}
-					onClick={SelectedHandler}
 				></motion.div>
 				<motion.div whileHover={selectedId === null ? {scale: 1.1} : {scale: 1}}
 				whileTap={selectedId === null ? {scale: 0.9} : {scale: 1}}
