@@ -1,6 +1,5 @@
 import './App.css';
 import React from "react";
-import { CookiesProvider } from 'react-cookie';
 import Index from "./routes/index";
 import Calendrier from "./routes/Calendrier";
 import Cuisine from "./routes/cuisine";
@@ -14,7 +13,6 @@ import styles from "./styles/Global.css";
 
 function App() {
   return (
-    <CookiesProvider>
       <Router>
           <Routes>
             <Route path="/Cuisine" element={<Cuisine />}/>
@@ -22,7 +20,6 @@ function App() {
             <Route path="/" element={<Index />}/>
           </Routes>
       </Router>
-    </CookiesProvider>
   );
 }
 

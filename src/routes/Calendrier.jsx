@@ -359,6 +359,7 @@ function Calendrier () {
 	function handleTouchMove(e) {
 		setTouchEnd(e.targetTouches[0].clientX);
 	}
+	
 
 	function handleTouchEnd() {
 		console.log(touchStart - touchEnd);
