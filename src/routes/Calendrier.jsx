@@ -391,7 +391,7 @@ function Calendrier () {
 			apiCalendar.listEvents({
 				timeMin: dateStart.toISOString(),
 				timeMax: dateEnd.toISOString(),
-				showDeleted: true,
+				showDeleted: false,
 				maxResults: 100,
 				orderBy: 'updated'
 			}).then(({ result }) => {
