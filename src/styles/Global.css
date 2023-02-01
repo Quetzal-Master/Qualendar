@@ -447,7 +447,8 @@ body {
   -moz-osx-font-smoothing: grayscale; }
 
 .rose {
-  background-color: #f9ceee !important; }
+  background-color: #f9ceee !important;
+  color: black !important; }
 
 .bleu {
   background-color: #9adcff !important; }
