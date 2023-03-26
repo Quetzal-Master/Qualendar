@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"proxy": "http://localhost:3002",
+	"unsafe-perm": true,
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",

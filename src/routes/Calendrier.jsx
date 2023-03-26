@@ -508,6 +508,10 @@ function Calendrier() {
 					console.log("Api isnt loaded for the moment : " + apiCalendar + " tmpLog : " + tmpLog);
 				}
 			});
+			socket.addEventListener("close", (event) => {
+				console.log("WebSocket disconnected");
+				setTimeout(() => setSocket(new WebSocket("wss://tablette-maman.herokuapp.com/websocket-connect")), 1000); // reconnect after 1 second
+			});
 		}
 	}, [month, socket, tmpLog, year]);
 
