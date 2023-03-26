@@ -25,10 +25,33 @@ const config = {
 };
 
 const apiCalendar = new ApiCalendar(config);
-
 function Calendrier() {
 	const [socket, setSocket] = useState(null);
 	//const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
+
+	const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+	const setWatchingCalendar = async () => {
+		let isOver = false;
+		let i = 0;
+		while (!isOver) {
+			console.log(i);
+			if (apiCalendar.authenticated) {
+				isOver = true;
+				apiCalendar
+					.watchEvents({
+						id: uuidv4(),
+						type: "web_hook",
+						address: "https://tablette-maman.herokuapp.com/webhook",
+					})
+					.then(({ result }) => {
+						console.log("Webhook result  : " + JSON.stringify(result));
+					});
+			} else {
+				await delay(1000);
+			}
+		}
+	};
 
 	const [monthEvents, setMonthEvents] = useState([]);
 	const [dayEvents, setDayEvents] = useState([]);
@@ -170,21 +193,13 @@ function Calendrier() {
 		if (tmpLog === false) {
 			apiCalendar.tokenClient.requestAccessToken({ prompt: "consent" });
 			apiCalendar.setCalendar("a6950e1b642d8663865fd2351d5107fae9e1537514f7e9d8b301364aa53d9568@group.calendar.google.com");
+			setWatchingCalendar();
 			setTmpLog(true);
+
+			console.log("token client before : " + apiCalendar.sign);
 		} else {
-			apiCalendar.listUpcomingEvents(10).then(({ result }) => {
-				console.log(result.items);
-			});
-			apiCalendar
-				.watchEvents({
-					id: uuidv4(),
-					type: "web_hook",
-					address: "https://tablette-maman.vercel.app/webhook",
-				})
-				.then(({ result }) => {
-					console.log("Webhook result  : " + JSON.stringify(result));
-					setWatchResponse(result.items);
-				});
+			console.log(apiCalendar.authenticated);
+			console.log("token client after : " + apiCalendar.sign);
 			setmodalType(1);
 			modalOpen ? close() : open();
 		}
@@ -423,9 +438,6 @@ function Calendrier() {
 		}
 	}
 
-	//WatchEvents
-	const [watchResponse, setWatchResponse] = useState(null);
-
 	useEffect(() => {
 		if (apiCalendar != null && tmpLog) {
 			const dateStart = new Date(year, month);
@@ -444,10 +456,6 @@ function Calendrier() {
 				});
 		}
 	}, [month, year]);
-
-	useEffect(() => {
-		console.log(watchResponse);
-	}, [watchResponse]);
 
 	useEffect(() => {
 		if (apiCalendar != null && tmpLog && selectedId !== null) {
@@ -469,7 +477,7 @@ function Calendrier() {
 
 	const [modalType, setmodalType] = React.useState(0);
 	useEffect(() => {
-		setSocket(new WebSocket("ws://tablette-maman.vercel.app//fastify-route"));
+		setSocket(new WebSocket("wss://tablette-maman.herokuapp.com/websocket-connect"));
 	}, []);
 
 	useEffect(() => {
