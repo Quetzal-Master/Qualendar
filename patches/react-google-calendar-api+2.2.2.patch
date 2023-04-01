@@ -1,0 +1,140 @@
+diff --git a/node_modules/react-google-calendar-api/dist/ApiCalendar.d.ts b/node_modules/react-google-calendar-api/dist/ApiCalendar.d.ts
+index aced753..d331ea8 100644
+--- a/node_modules/react-google-calendar-api/dist/ApiCalendar.d.ts
++++ b/node_modules/react-google-calendar-api/dist/ApiCalendar.d.ts
+@@ -17,6 +17,7 @@ declare class ApiCalendar {
+     calendar: string;
+     constructor(config: ConfigApiCalendar);
+     get sign(): boolean;
++    get authenticated(): boolean;
+     /**
+      * Auth to the google Api.
+      */
+@@ -26,6 +27,8 @@ declare class ApiCalendar {
+      * And create gapi in global
+      */
+     private handleClientLoad;
++
++    private callServiceApi;
+     /**
+      * Sign in Google user account
+      */
+@@ -59,6 +62,13 @@ declare class ApiCalendar {
+      * @returns {any}
+      */
+     listEvents(queryOptions: object, calendarId?: string): any;
++    /**
++     * Watch Calendar events
++     * @param {object} queryOptions to see
++     * @param {string} calendarId to see by default use the calendar attribute
++     * @returns {any}
++     */
++    watchEvents(queryOptions: object, calendarId?: string): any;
+     /**
+      * Create an event from the current time for a certain period
+      * @param {number} time in minutes for the event
+diff --git a/node_modules/react-google-calendar-api/dist/ApiCalendar.js b/node_modules/react-google-calendar-api/dist/ApiCalendar.js
+index d5191d5..acd3670 100644
+--- a/node_modules/react-google-calendar-api/dist/ApiCalendar.js
++++ b/node_modules/react-google-calendar-api/dist/ApiCalendar.js
+@@ -1,7 +1,5 @@
+ var __defProp = Object.defineProperty;
+-var __defProps = Object.defineProperties;
+ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+-var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+ var __getOwnPropNames = Object.getOwnPropertyNames;
+ var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+ var __hasOwnProp = Object.prototype.hasOwnProperty;
+@@ -18,7 +16,6 @@ var __spreadValues = (a, b) => {
+     }
+   return a;
+ };
+-var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+ var __export = (target, all) => {
+   for (var name in all)
+     __defProp(target, name, { get: all[name], enumerable: true });
+@@ -54,6 +51,7 @@ var ApiCalendar = class {
+       this.createEvent = this.createEvent.bind(this);
+       this.listUpcomingEvents = this.listUpcomingEvents.bind(this);
+       this.listEvents = this.listEvents.bind(this);
++      this.watchEvents = this.watchEvents.bind(this);
+       this.createEventFromNow = this.createEventFromNow.bind(this);
+       this.onLoad = this.onLoad.bind(this);
+       this.setCalendar = this.setCalendar.bind(this);
+@@ -68,6 +66,9 @@ var ApiCalendar = class {
+   get sign() {
+     return !!this.tokenClient;
+   }
++  get authenticated() {
++    return !!gapi.client.getToken();
++  }
+   initGapiClient() {
+     gapi.client.init({
+       apiKey: this.config.apiKey,
+@@ -105,8 +106,18 @@ var ApiCalendar = class {
+       });
+     };
+   }
++  callServiceApi(gresponse) {
++    console.log(gresponse);
++  }
++
++  siuuuu(){
++    console.log("SIUUUUU");
++  }
++    
+   handleAuthClick() {
+     if (gapi && this.tokenClient) {
++      this.tokenClient.callback = this.callServiceApi;
++      console.log('RIGHT THEREEE');
+       if (gapi.client.getToken() === null) {
+         this.tokenClient.requestAccessToken({ prompt: "consent" });
+       } else {
+@@ -167,6 +178,19 @@ var ApiCalendar = class {
+       return false;
+     }
+   }
++  watchEvents(queryOptions, calendarId = this.calendar) {
++    console.log("Watch events 5: " + this.calendar);
++    if (gapi) {
++      return gapi.client.request({
++        'path': '/calendar/v3/calendars/a6950e1b642d8663865fd2351d5107fae9e1537514f7e9d8b301364aa53d9568@group.calendar.google.com/events/watch',
++        'method': 'POST',
++        'body': queryOptions,
++      });
++    } else {
++      console.error("Error: gapi not loaded");
++      return false;
++    }
++  }
+   createEventFromNow({ time, summary, description = "" }, calendarId = this.calendar, timeZone = "Europe/Paris") {
+     const event = {
+       summary,
+@@ -187,26 +211,13 @@ var ApiCalendar = class {
+       return gapi.client.calendar.events.insert({
+         calendarId,
+         resource: event,
+-        sendUpdates,
+-        conferenceDataVersion: 1
++        sendUpdates
+       });
+     } else {
+       console.error("Error: this.gapi not loaded");
+       return false;
+     }
+   }
+-  createEventWithVideoConference(event, calendarId = this.calendar, sendUpdates = "none") {
+-    return this.createEvent(__spreadProps(__spreadValues({}, event), {
+-      conferenceData: {
+-        createRequest: {
+-          requestId: crypto.randomUUID(),
+-          conferenceSolutionKey: {
+-            type: "hangoutsMeet"
+-          }
+-        }
+-      }
+-    }), calendarId, sendUpdates);
+-  }
+   deleteEvent(eventId, calendarId = this.calendar) {
+     if (gapi) {
+       return gapi.client.calendar.events.delete({
