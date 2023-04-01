@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Qualendar
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Qualendar is a web application that allows you to view your Google Calendar directly on the website when you're signed in to your Google account. In future versions, you'll also be able to see the weather forecast for each day.
 
-## Available Scripts
+## About
 
-In the project directory, you can run:
+Qualendar was created to make it easier for people to access and manage their Google Calendar. We noticed that many people have their calendar open in a separate tab or application while they work, which can be distracting and take up valuable screen real estate. By integrating the calendar directly into the Qualendar website, we hope to make it more convenient and seamless to manage your schedule.
 
-### `npm start`
+In addition to the calendar functionality, we're also working on adding a weather forecast feature to Qualendar. This will allow you to quickly check the weather for the day without needing to open a separate app or website.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+We're committed to making Qualendar as user-friendly and accessible as possible. If you have any feedback or suggestions for how we can improve the app, please don't hesitate to let us know!
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation
 
-### `npm test`
+Qualendar is a web-based application, so you don't need to install anything on your computer. Simply go to the website [qualendar.vercel.app](https://qualendar.vercel.app/) and sign in with your Google account to access your calendar.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Usage
 
-### `npm run build`
+Once you're signed in to your Google account, Qualendar will display your calendar for the current month. You can click on any day to view the events for that day, or use the navigation arrows to switch between months.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## License
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Quetzal-Master/Qualendar/blob/main/LICENCE) file for details.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Contributing
 
-### `npm run eject`
+We welcome contributions from anyone who is interested in improving Qualendar! If you have an idea for a new feature or would like to fix a bug, please submit a pull request.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Support
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If you encounter any issues with Qualendar, please open a [new issue](https://github.com/Quetzal-Master/Qualendar/issues) on our GitHub repository.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Acknowledgments
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+We would like to thank the developers of the Google Calendar API and OpenWeather for providing the tools and resources needed to build Qualendar.
 
-## Learn More
+## Authors
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Qualendar was created by [HATTSTADT Quentin](https://github.com/HattstadtQuentin).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contact
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For any questions or feedback, please contact us at [contact@quetzal.pro](mailto:contact@quetzal.pro).
