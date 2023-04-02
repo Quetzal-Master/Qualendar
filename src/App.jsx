@@ -1,8 +1,6 @@
 import './App.css';
 import React from "react";
-import Index from "./routes/index";
-import Calendrier from "./routes/Calendrier";
-import Cuisine from "./routes/cuisine";
+import Qualendar from "./routes/Qualendar";
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,9 +13,7 @@ function App() {
   return (
       <Router>
           <Routes>
-            <Route path="/Cuisine" element={<Cuisine />}/>
-            <Route path="/Calendrier" element={<Calendrier />}/>
-            <Route path="/" element={<Index />}/>
+            <Route path="/" element={<Qualendar />}/>
           </Routes>
       </Router>
   );
