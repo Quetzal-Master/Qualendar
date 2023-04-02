@@ -25,7 +25,7 @@ const config = {
 };
 
 const apiCalendar = new ApiCalendar(config);
-function Calendrier() {
+function Qualendar() {
 	const [socket, setSocket] = useState(null);
 	//const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
 
@@ -547,4 +547,4 @@ function Calendrier() {
 	);
 }
 
-export default Calendrier;
+export default Qualendar;
