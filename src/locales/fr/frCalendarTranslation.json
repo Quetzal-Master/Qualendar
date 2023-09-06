@@ -1,0 +1,27 @@
+{
+  "fr": {
+    "months": {
+      "January": "janvier",
+      "February": "février",
+      "March": "mars",
+      "April": "avril",
+      "May": "mai",
+      "June": "juin",
+      "July": "juillet",
+      "August": "août",
+      "September": "septembre",
+      "October": "octobre",
+      "November": "novembre",
+      "December": "décembre"
+    },
+    "days": {
+      "Sunday": "dimanche",
+      "Monday": "lundi",
+      "Tuesday": "mardi",
+      "Wednesday": "mercredi",
+      "Thursday": "jeudi",
+      "Friday": "vendredi",
+      "Saturday": "samedi"
+    }
+  }
+}
