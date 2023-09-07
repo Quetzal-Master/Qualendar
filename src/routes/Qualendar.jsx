@@ -4,13 +4,13 @@ import { MdTransitEnterexit } from "react-icons/md";
 import { AnimatePresence, motion } from "framer-motion";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import ApiCalendar from "react-google-calendar-api";
-import { v4 as uuidv4 } from "uuid";
 //import { useLocalStorage } from "../hooks/useLocalStorage";
 import QuentinPIC from "../styles/images/QuentinFull.jpg";
 import JordanPIC from "../styles/images/JordanFull.jpg";
 import MamanPIC from "../styles/images/mamanFull.jpg";
 import PapaPIC from "../styles/images/papaFull.jpg";
-import { monthsList, daysList } from "../constants/dayMonth";
+import { daysList } from "../constants/dayMonth";
+import { useSelector } from "react-redux";
 
 import PaperCalendar from "../components/interfaces/PaperCalendar";
 
@@ -21,41 +21,12 @@ const config = {
 	clientId: calendarID,
 	apiKey: apiKey,
 	scope: "https://www.googleapis.com/auth/calendar",
-	discoveryDocs: [
-		"https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-	],
+	discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
 };
 
 const apiCalendar = new ApiCalendar(config);
 function Qualendar() {
-	const [socket, setSocket] = useState(null);
-	//const [accessToken, setAccessToken] = useLocalStorage("accessToken", "");
-
-	const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
-	const setWatchingCalendar = async () => {
-		let isOver = false;
-		let i = 0;
-		while (!isOver) {
-			console.log(i);
-			if (apiCalendar.authenticated) {
-				isOver = true;
-				apiCalendar
-					.watchEvents({
-						id: uuidv4(),
-						type: "web_hook",
-						address: "https://tablette-maman.herokuapp.com/webhook",
-					})
-					.then(({ result }) => {
-						console.log(
-							"Webhook result  : " + JSON.stringify(result)
-						);
-					});
-			} else {
-				await delay(1000);
-			}
-		}
-	};
+	const { isLogged } = useSelector((state) => state.user);
 
 	const [monthEvents, setMonthEvents] = useState([]);
 	const [dayEvents, setDayEvents] = useState([]);
@@ -66,35 +37,19 @@ function Qualendar() {
 			let color = null;
 			switch (evenement.creator.email) {
 				case "qhattstadt@gmail.com":
-					profilPic = (
-						<img
-							className="profilPic"
-							src={QuentinPIC}
-							alt="Quentin"
-						/>
-					);
+					profilPic = <img className="profilPic" src={QuentinPIC} alt="Quentin" />;
 					color = "bleu";
 					break;
 				case "jhattstadt@gmail.com":
-					profilPic = (
-						<img
-							className="profilPic"
-							src={JordanPIC}
-							alt="Jordan"
-						/>
-					);
+					profilPic = <img className="profilPic" src={JordanPIC} alt="Jordan" />;
 					color = "orange";
 					break;
 				case "jasmine.hattstadt@gmail.com":
-					profilPic = (
-						<img className="profilPic" src={MamanPIC} alt="Maman" />
-					);
+					profilPic = <img className="profilPic" src={MamanPIC} alt="Maman" />;
 					color = "rose";
 					break;
 				case "thierry.hattstadt@gmail.com":
-					profilPic = (
-						<img className="profilPic" src={PapaPIC} alt="Papa" />
-					);
+					profilPic = <img className="profilPic" src={PapaPIC} alt="Papa" />;
 					color = "jaune";
 					break;
 				default:
@@ -121,21 +76,13 @@ function Qualendar() {
 		});
 	};
 
-	const [tmpLog, setTmpLog] = useState(false);
-
 	const EventListDetails = () => {
 		let tabHeurePlacement = [];
 		dayEvents.map((evenement, i) => {
 			const dateEnd = new Date(evenement.end.dateTime);
 			const dateStart = new Date(evenement.start.dateTime);
-			const placement =
-				parseInt(dateStart.getHours(), 10) * 10 +
-				parseInt(dateStart.getMinutes(), 10) / 10 -
-				4;
-			const placementEnd =
-				parseInt(dateEnd.getHours(), 10) * 10 +
-				parseInt(dateEnd.getMinutes(), 10) / 10 -
-				4;
+			const placement = parseInt(dateStart.getHours(), 10) * 10 + parseInt(dateStart.getMinutes(), 10) / 10 - 4;
+			const placementEnd = parseInt(dateEnd.getHours(), 10) * 10 + parseInt(dateEnd.getMinutes(), 10) / 10 - 4;
 			tabHeurePlacement.push([placement, placementEnd]);
 		});
 		return dayEvents.map((evenement, i) => {
@@ -144,35 +91,19 @@ function Qualendar() {
 			console.log(evenement);
 			switch (evenement.creator.email) {
 				case "qhattstadt@gmail.com":
-					profilPic = (
-						<img
-							className="profilPic"
-							src={QuentinPIC}
-							alt="Quentin"
-						/>
-					);
+					profilPic = <img className="profilPic" src={QuentinPIC} alt="Quentin" />;
 					color = "bleu";
 					break;
 				case "jhattstadt@gmail.com":
-					profilPic = (
-						<img
-							className="profilPic"
-							src={JordanPIC}
-							alt="Jordan"
-						/>
-					);
+					profilPic = <img className="profilPic" src={JordanPIC} alt="Jordan" />;
 					color = "orange";
 					break;
 				case "jasmine.hattstadt@gmail.com":
-					profilPic = (
-						<img className="profilPic" src={MamanPIC} alt="Maman" />
-					);
+					profilPic = <img className="profilPic" src={MamanPIC} alt="Maman" />;
 					color = "rose";
 					break;
 				case "thierry.hattstadt@gmail.com":
-					profilPic = (
-						<img className="profilPic" src={PapaPIC} alt="Papa" />
-					);
+					profilPic = <img className="profilPic" src={PapaPIC} alt="Papa" />;
 					color = "jaune";
 					break;
 				default:
@@ -183,29 +114,14 @@ function Qualendar() {
 			const dateEnd = new Date(evenement.end.dateTime);
 			const dateStart = new Date(evenement.start.dateTime);
 
-			const duree =
-				parseInt(dateEnd.getHours(), 10) +
-				parseInt(dateEnd.getMinutes(), 10) / 100 -
-				(parseInt(dateStart.getHours(), 10) +
-					parseInt(dateStart.getMinutes(), 10) / 100);
-			const placement =
-				parseInt(dateStart.getHours(), 10) * 10 +
-				parseInt(dateStart.getMinutes(), 10) / 10 -
-				4;
-			const placementEnd =
-				parseInt(dateEnd.getHours(), 10) * 10 +
-				parseInt(dateEnd.getMinutes(), 10) / 10 -
-				4;
+			const duree = parseInt(dateEnd.getHours(), 10) + parseInt(dateEnd.getMinutes(), 10) / 100 - (parseInt(dateStart.getHours(), 10) + parseInt(dateStart.getMinutes(), 10) / 100);
+			const placement = parseInt(dateStart.getHours(), 10) * 10 + parseInt(dateStart.getMinutes(), 10) / 10 - 4;
+			const placementEnd = parseInt(dateEnd.getHours(), 10) * 10 + parseInt(dateEnd.getMinutes(), 10) / 10 - 4;
 			let nbSame = 0;
 			let positionSame = 0;
 			tabHeurePlacement.forEach((elem) => {
 				console.log(elem);
-				if (
-					(placement >= elem[1] && placement <= elem[0]) ||
-					(placementEnd >= elem[1] && placementEnd <= elem[0]) ||
-					(placementEnd >= elem[1] && placement <= elem[0]) ||
-					(placementEnd <= elem[1] && placement >= elem[0])
-				) {
+				if ((placement >= elem[1] && placement <= elem[0]) || (placementEnd >= elem[1] && placementEnd <= elem[0]) || (placementEnd >= elem[1] && placement <= elem[0]) || (placementEnd <= elem[1] && placement >= elem[0])) {
 					nbSame++;
 					if (elem[2] != null) {
 						positionSame++;
@@ -228,8 +144,7 @@ function Qualendar() {
 						height: duree * 10 + "%",
 						top: placement + "%",
 						width: width + "%",
-						left:
-							10 + width * positionSame + 5 * positionSame + "%",
+						left: 10 + width * positionSame + 5 * positionSame + "%",
 					}}
 				>
 					{profilPic}
@@ -254,12 +169,7 @@ function Qualendar() {
 	const [selectedId, setSelectedId] = useState(null);
 
 	const SelectedHandler = function (e) {
-		setSelectedId(
-			parseInt(
-				e.target.closest("[data-index]").getAttribute("data-index"),
-				10
-			)
-		);
+		setSelectedId(parseInt(e.target.closest("[data-index]").getAttribute("data-index"), 10));
 	};
 
 	const item = {
@@ -269,23 +179,10 @@ function Qualendar() {
 			opacity: 1,
 		},
 	};
-	const [modalOpen, setModalOpen] = useState(false);
-
-	const close = () => {
-		setModalOpen(false);
-		console.log("Close modal");
-	};
-	const open = () => {
-		setModalOpen(true);
-		console.log("Open modal");
-	};
 
 	const dayClassName = (i) => {
 		let ret = " ";
-		if (
-			daysList[(firstOfMonth.getDay() - 1 + i) % 7] === "Sunday" ||
-			daysList[firstOfMonth.getDay() - 1] === "Sunday"
-		) {
+		if (daysList[(firstOfMonth.getDay() - 1 + i) % 7] === "Sunday" || daysList[firstOfMonth.getDay() - 1] === "Sunday") {
 			ret += "dimanche ";
 		}
 		if ((selectedId !== null) & (selectedId === i)) {
@@ -306,9 +203,7 @@ function Qualendar() {
 				variants={item}
 				layoutId={i}
 				data-index={i}
-				onClick={(e) =>
-					selectedId !== null ? null : SelectedHandler(e)
-				}
+				onClick={(e) => (selectedId !== null ? null : SelectedHandler(e))}
 				key={i}
 				className={`jour ${dayClassName(i)}`}
 			>
@@ -317,9 +212,7 @@ function Qualendar() {
 						<p>{i + 1}</p>
 						<p>{daysList[(firstOfMonth.getDay() - 1 + i) % 7]}</p>
 					</div>
-					{selectedId === null && (
-						<div className={"jourEvents"}>{EventList(i + 1)}</div>
-					)}
+					{selectedId === null && <div className={"jourEvents"}>{EventList(i + 1)}</div>}
 					{selectedId !== null && (
 						<Scrollbars className={"jourHeure"}>
 							<div className="heure">
@@ -419,16 +312,7 @@ function Qualendar() {
 					)}
 				</motion.div>
 				<motion.div className="addEvent"></motion.div>
-				<motion.div
-					whileHover={
-						selectedId === null ? { scale: 1.1 } : { scale: 1 }
-					}
-					whileTap={
-						selectedId === null ? { scale: 0.9 } : { scale: 1 }
-					}
-					className="exitDetails"
-					onClick={() => setSelectedId(null)}
-				>
+				<motion.div whileHover={selectedId === null ? { scale: 1.1 } : { scale: 1 }} whileTap={selectedId === null ? { scale: 0.9 } : { scale: 1 }} className="exitDetails" onClick={() => setSelectedId(null)}>
 					<MdTransitEnterexit />
 				</motion.div>
 			</motion.div>
@@ -436,13 +320,9 @@ function Qualendar() {
 	}
 
 	useEffect(() => {
-		if (apiCalendar != null && tmpLog) {
+		if (apiCalendar != null && isLogged) {
 			const dateStart = new Date(year, month);
-			const dateEnd = new Date(
-				year,
-				month,
-				getDaysInMonth(year, month + 1)
-			);
+			const dateEnd = new Date(year, month, getDaysInMonth(year, month + 1));
 			apiCalendar
 				.listEvents({
 					timeMin: dateStart.toISOString(),
@@ -459,7 +339,7 @@ function Qualendar() {
 	}, [month, year]);
 
 	useEffect(() => {
-		if (apiCalendar != null && tmpLog && selectedId !== null) {
+		if (apiCalendar != null && isLogged && selectedId !== null) {
 			const date = new Date(year, month, selectedId + 1);
 			const dateEnd = new Date(year, month, selectedId + 2);
 			apiCalendar
@@ -476,29 +356,21 @@ function Qualendar() {
 		}
 	}, [selectedId]);
 
-	const [modalType, setmodalType] = React.useState(0);
 	useEffect(() => {
-		setSocket(
-			new WebSocket(
-				"wss://quetzal-qualendar-api.herokuapp.com/websocket-connect"
-			)
-		);
-	}, []);
+		let eventSource;
 
-	useEffect(() => {
-		if (socket) {
-			socket.onopen = () => {
-				console.log("WebSocket connection established");
-				socket.send("Hello, server!");
+		if (isLogged) {
+			eventSource = new EventSource("http://localhost:8000/events");
+
+			eventSource.onopen = (event) => {
+				console.log("SSE connection established", event);
 			};
-			socket.addEventListener("message", (event) => {
-				if (apiCalendar != null && tmpLog) {
+
+			eventSource.onmessage = (event) => {
+				if (apiCalendar != null) {
 					const dateStart = new Date(year, month);
-					const dateEnd = new Date(
-						year,
-						month,
-						getDaysInMonth(year, month + 1)
-					);
+					const dateEnd = new Date(year, month, getDaysInMonth(year, month + 1));
+
 					apiCalendar
 						.listEvents({
 							timeMin: dateStart.toISOString(),
@@ -510,42 +382,27 @@ function Qualendar() {
 						.then(({ result }) => {
 							console.log(result);
 							setMonthEvents(result.items);
-
-							console.log("Evenement bien refreshed");
+							console.log("Event well refreshed");
 						});
 				} else {
-					console.log(
-						"Api isnt loaded for the moment : " +
-							apiCalendar +
-							" tmpLog : " +
-							tmpLog
-					);
+					console.log("Api isn't loaded for the moment:", apiCalendar, "isLogged:", isLogged);
 				}
-			});
-			socket.addEventListener("close", (event) => {
-				console.log("WebSocket disconnected");
-				setTimeout(
-					() =>
-						setSocket(
-							new WebSocket(
-								"wss://quetzal-qualendar-api.herokuapp.com/websocket-connect"
-							)
-						),
-					1000
-				);
-			});
-		}
-	}, [month, socket, tmpLog, year]);
+			};
 
-	return (
-		<PaperCalendar
-			modalOpen={modalOpen}
-			close={close}
-			modalType={modalType}
-			tmpLog={tmpLog}
-			divJours={divJours}
-		/>
-	);
+			eventSource.onerror = (error) => {
+				console.error("EventSource failed:", error);
+				eventSource.close();
+			};
+		}
+
+		return () => {
+			if (eventSource) {
+				eventSource.close();
+			}
+		};
+	}, [month, isLogged, year]);
+
+	return <PaperCalendar apiCalendar={apiCalendar} divJours={divJours} />;
 }
 
 export default Qualendar;
