@@ -1,22 +1,20 @@
-import './App.css';
+import "./App.css";
 import React from "react";
-import Qualendar from "./routes/Qualendar";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
-
-import styles from "./styles/Global.css";
+import Qualendar from "@/routes/Qualendar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import calendarStore from "@/stores/calendar/calendarStore";
 
 function App() {
-  return (
-      <Router>
-          <Routes>
-            <Route path="/" element={<Qualendar />}/>
-          </Routes>
-      </Router>
-  );
+	return (
+		<Provider store={calendarStore}>
+			<Router>
+				<Routes>
+					<Route path="/" element={<Qualendar />} />
+				</Routes>
+			</Router>
+		</Provider>
+	);
 }
 
 export default App;

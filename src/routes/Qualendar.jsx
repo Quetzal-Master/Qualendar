@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BsFillPersonXFill } from "react-icons/bs";
 import { MdTransitEnterexit } from "react-icons/md";
-import getUnsplashImage from "../hooks/ImageUnsplash";
 import { AnimatePresence, motion } from "framer-motion";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import ApiCalendar from "react-google-calendar-api";
@@ -11,11 +10,12 @@ import QuentinPIC from "../styles/images/QuentinFull.jpg";
 import JordanPIC from "../styles/images/JordanFull.jpg";
 import MamanPIC from "../styles/images/mamanFull.jpg";
 import PapaPIC from "../styles/images/papaFull.jpg";
+import { monthsList, daysList } from "../constants/dayMonth";
 
 import PaperCalendar from "../components/interfaces/PaperCalendar";
 
-const calendarID = process.env.REACT_APP_CALENDAR_ID;
-const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+const calendarID = import.meta.env.VITE_CALENDAR_ID;
+const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
 const config = {
 	clientId: calendarID,
@@ -245,25 +245,8 @@ function Qualendar() {
 	}
 	const current = new Date();
 
-	const monthNamesEn = [
-		"January",
-		"February",
-		"Mars",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
-	];
-
 	const [month, setMonth] = useState(current.getMonth());
 	const [year, setYear] = useState(current.getFullYear());
-
-	var unsplashimg = getUnsplashImage(monthNamesEn[month]);
 
 	var firstOfMonth = new Date(year, month, 1);
 	var divJours = [];
@@ -300,8 +283,8 @@ function Qualendar() {
 	const dayClassName = (i) => {
 		let ret = " ";
 		if (
-			daysName[(firstOfMonth.getDay() - 1 + i) % 7] === "Dimanche" ||
-			daysName[firstOfMonth.getDay() - 1] === "Dimanche"
+			daysList[(firstOfMonth.getDay() - 1 + i) % 7] === "Sunday" ||
+			daysList[firstOfMonth.getDay() - 1] === "Sunday"
 		) {
 			ret += "dimanche ";
 		}
@@ -332,7 +315,7 @@ function Qualendar() {
 				<motion.div className="jourContainer">
 					<div className={`jourInfos${i <= 12 ? " vacances" : ""}`}>
 						<p>{i + 1}</p>
-						<p>{daysName[(firstOfMonth.getDay() - 1 + i) % 7]}</p>
+						<p>{daysList[(firstOfMonth.getDay() - 1 + i) % 7]}</p>
 					</div>
 					{selectedId === null && (
 						<div className={"jourEvents"}>{EventList(i + 1)}</div>
@@ -497,7 +480,7 @@ function Qualendar() {
 	useEffect(() => {
 		setSocket(
 			new WebSocket(
-				"wss://tablette-maman.herokuapp.com/websocket-connect"
+				"wss://quetzal-qualendar-api.herokuapp.com/websocket-connect"
 			)
 		);
 	}, []);
@@ -545,11 +528,11 @@ function Qualendar() {
 					() =>
 						setSocket(
 							new WebSocket(
-								"wss://tablette-maman.herokuapp.com/websocket-connect"
+								"wss://quetzal-qualendar-api.herokuapp.com/websocket-connect"
 							)
 						),
 					1000
-				); // reconnect after 1 second
+				);
 			});
 		}
 	}, [month, socket, tmpLog, year]);
@@ -557,14 +540,9 @@ function Qualendar() {
 	return (
 		<PaperCalendar
 			modalOpen={modalOpen}
-			handleLoginLogout={handleLoginLogout}
 			close={close}
 			modalType={modalType}
 			tmpLog={tmpLog}
-			unsplashimg={unsplashimg}
-			monthNames={monthNames}
-			month={month}
-			year={year}
 			divJours={divJours}
 		/>
 	);

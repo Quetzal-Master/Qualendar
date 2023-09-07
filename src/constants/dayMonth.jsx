@@ -1,19 +1,19 @@
-export const months = [
-	"Janvier",
-	"Fevrier",
-	"Mars",
-	"Avril",
-	"Mai",
-	"Juin",
-	"Juillet",
-	"Août",
-	"Septembre",
-	"Octobre",
-	"Novembre",
-	"Decembre",
+export const monthsList = [
+	"January",
+	"February",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December",
 ];
 
-export const days = [
+export const daysList = [
 	"Lundi",
 	"Mardi",
 	"Mercredi",

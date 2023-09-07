@@ -1,76 +1,82 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { RiHomeGearFill, RiLoginBoxLine } from "react-icons/ri";
-import Modal from "../Modal";
+import { monthsList } from "@/constants/dayMonth";
+import getUnsplashImage from "@/hooks/ImageUnsplash";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentMonth } from "@/stores/calendar/calendarSlice";
+import Modal from "@/components/Modal";
 
-function PaperCalendar({ modalOpen, handleLoginLogout, close, modalType, tmpLog, unsplashimg, monthNames, month, year, divJours }) {
-	const dayEntranceAnimation = {
-		hidden: { opacity: 1, scale: 0 },
-		visible: {
-			opacity: 1,
-			scale: 1,
-			transition: {
-				delayChildren: 0.3,
-				staggerChildren: 0.2,
-			},
+const dayEntranceAnimation = {
+	hidden: { opacity: 1, scale: 0 },
+	visible: {
+		opacity: 1,
+		scale: 1,
+		transition: {
+			delayChildren: 0.3,
+			staggerChildren: 0.2,
 		},
-	};
+	},
+};
+
+function PaperCalendar({
+	modalOpen,
+	close,
+	modalType,
+	tmpLog, //TODO: Passer par le store user
+	divJours,
+}) {
+	const dispatch = useDispatch();
+	const { currentMonth, currentYear } = useSelector(
+		(state) => state.calendar
+	);
 
 	const [touchStart, setTouchStart] = useState(0);
-	const [touchEnd, setTouchEnd] = useState(0);
-
-	function handleTouchStart(e) {
-		setTouchStart(e.targetTouches[0].clientX);
-	}
-
-	function handleTouchMove(e) {
-		setTouchEnd(e.targetTouches[0].clientX);
-	}
-
-	function handleTouchEnd() {
-		console.log(touchStart - touchEnd);
+	function handleTouchEnd(touchEnd) {
 		if (touchStart - touchEnd > 250) {
-			// do your stuff here for left swipe
-			if (month === 11) {
-				setYear(year + 1);
-			}
-			setMonth((month + 1) % 12);
-			setSelectedId(null);
+			dispatch(setCurrentMonth(currentMonth + 1));
 		}
-
 		if (touchStart - touchEnd < -250) {
-			// do your stuff here for right swipe
-			if (month === 0) {
-				setYear(year - 1);
-				setMonth(11);
-			} else {
-				setMonth(month - 1);
-			}
-			setSelectedId(null);
+			dispatch(setCurrentMonth(currentMonth - 1));
 		}
 	}
+
+	var unsplashimg = getUnsplashImage(monthsList[currentMonth]);
 
 	return (
 		<div className="calendrier">
 			<AnimatePresence initial={false} exitBeforeEnter={true}>
-				{modalOpen && <Modal modalOpen={modalOpen} handleClose={close} type={modalType} />}
+				{modalOpen && (
+					<Modal
+						modalOpen={modalOpen}
+						handleClose={close}
+						type={modalType}
+					/>
+				)}
 			</AnimatePresence>
 			<motion.div
 				className="params"
 				whileHover={{ scale: 1.1 }}
 				whileTap={{ scale: 0.9 }}
-				onClick={() => {
-					handleLoginLogout();
-				}}
+				onClick={() => {}}
 			>
 				{tmpLog === false ? <RiLoginBoxLine /> : <RiHomeGearFill />}
 			</motion.div>
-			<div className="calendrierHeader" onTouchStart={(e) => handleTouchStart(e)} onTouchMove={(e) => handleTouchMove(e)} onTouchEnd={(e) => handleTouchEnd(e)}>
+			<div
+				className="calendrierHeader"
+				onTouchStart={(e) => setTouchStart(e.targetTouches[0].clientX)}
+				onTouchEnd={(e) => handleTouchEnd(e.targetTouches[0].clientX)}
+			>
 				<img src={unsplashimg.src} alt={unsplashimg.alt} />
-				<h1>{monthNames[month]}</h1>
-				<h3>{year}</h3>
+				<h1>{monthsList[currentMonth]}</h1>
+				<h3>{currentYear}</h3>
 			</div>
-			<motion.div variants={dayEntranceAnimation} initial="hidden" animate="visible" className="calendrierBody">
+			<motion.div
+				variants={dayEntranceAnimation}
+				initial="hidden"
+				animate="visible"
+				className="calendrierBody"
+			>
 				{divJours}
 			</motion.div>
 		</div>
