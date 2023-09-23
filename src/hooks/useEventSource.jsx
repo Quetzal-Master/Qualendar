@@ -1,9 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { initializeCalendarApi } from "@/common/ApiCalendar.jsx";
 
-export default function useEventSource(url, isLogged, apiCalendar, callback) {
-	const { gapiInitialized } = useSelector((state) => state.user);
+export default function useEventSource(callback) {
+	const dispatch = useDispatch();
+	const url = import.meta.env.VITE_BACKEND_URL;
+	const { gapiInitialized, isLogged } = useSelector((state) => state.user);
+	const [apiCalendar, setApiCalendar] = useState(null);
+	useEffect(() => {
+		const api = initializeCalendarApi(dispatch);
+		setApiCalendar(api);
+	}, []);
 
 	useEffect(() => {
 		let eventSource;
@@ -33,9 +41,7 @@ export default function useEventSource(url, isLogged, apiCalendar, callback) {
 					eventSource.close();
 
 					if (eventSource.readyState === EventSource.CLOSED) {
-						console.log(
-							"EventSource closed. Attempting to reconnect..."
-						);
+						console.log("EventSource closed. Attempting to reconnect...");
 						setTimeout(() => {
 							initEventSource();
 						}, 3000);
@@ -51,5 +57,5 @@ export default function useEventSource(url, isLogged, apiCalendar, callback) {
 				eventSource.close();
 			}
 		};
-	}, [isLogged, apiCalendar]);
+	}, [isLogged, gapiInitialized]);
 }

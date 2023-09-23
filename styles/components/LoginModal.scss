@@ -1,0 +1,25 @@
+.loginModal {
+	width: 80%;
+	height: 50%;
+
+	margin: auto;
+	padding: 0 2rem;
+	border-radius: 12px;
+	display: flex;
+	background-color: white;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+
+	.modalHeader {
+		height: 10%;
+		background: green;
+		text-transform: uppercase;
+	}
+
+	.modalBody {
+		height: 70%;
+		width: 100%;
+		background: red;
+	}
+}

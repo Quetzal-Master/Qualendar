@@ -1,8 +1,17 @@
 diff --git a/node_modules/react-google-calendar-api/dist/ApiCalendar.d.ts b/node_modules/react-google-calendar-api/dist/ApiCalendar.d.ts
-index 0ca03ea..57c5342 100644
+index 0ca03ea..483c966 100644
 --- a/node_modules/react-google-calendar-api/dist/ApiCalendar.d.ts
 +++ b/node_modules/react-google-calendar-api/dist/ApiCalendar.d.ts
-@@ -21,6 +21,10 @@ declare class ApiCalendar {
+@@ -3,6 +3,8 @@ interface ConfigApiCalendar {
+     apiKey: string;
+     scope: string;
+     discoveryDocs: string[];
++    onLoadCallback?: Function;
++    calendarId?: string;
+     hosted_domain?: string;
+ }
+ interface TimeCalendarType {
+@@ -21,6 +23,10 @@ declare class ApiCalendar {
      calendar: string;
      constructor(config: ConfigApiCalendar);
      get sign(): boolean;
@@ -13,7 +22,7 @@ index 0ca03ea..57c5342 100644
      /**
       * Auth to the google Api.
       */
-@@ -30,11 +34,23 @@ declare class ApiCalendar {
+@@ -30,11 +36,23 @@ declare class ApiCalendar {
       * And create gapi in global
       */
      private handleClientLoad;
@@ -38,18 +47,20 @@ index 0ca03ea..57c5342 100644
       * Set the default attribute calendar
       * @param {string} newCalendar
 diff --git a/node_modules/react-google-calendar-api/dist/ApiCalendar.js b/node_modules/react-google-calendar-api/dist/ApiCalendar.js
-index 64f8018..071251a 100644
+index 64f8018..79fdfb5 100644
 --- a/node_modules/react-google-calendar-api/dist/ApiCalendar.js
 +++ b/node_modules/react-google-calendar-api/dist/ApiCalendar.js
-@@ -66,7 +66,7 @@ var ApiCalendar = class {
+@@ -66,8 +66,8 @@ var ApiCalendar = class {
    constructor(config) {
      this.config = config;
      this.tokenClient = null;
 -    this.onLoadCallback = null;
+-    this.calendar = "primary";
 +    this.onLoadCallback = config.onLoadCallback ?? null;
-     this.calendar = "primary";
++    this.calendar = config.calendarId ?? "primary";
      try {
        this.initGapiClient = this.initGapiClient.bind(this);
+       this.handleSignoutClick = this.handleSignoutClick.bind(this);
 @@ -89,6 +89,13 @@ var ApiCalendar = class {
    get sign() {
      return !!this.tokenClient;
@@ -69,7 +80,7 @@ index 64f8018..071251a 100644
        hosted_domain: this.config.hosted_domain
      }).then(() => {
 +      this.setCalendar(
-+        "a6950e1b642d8663865fd2351d5107fae9e1537514f7e9d8b301364aa53d9568@group.calendar.google.com"
++        this.config.calendarId
 +      );
 +      let storedTokenString = localStorage.getItem('googleAuthToken');
 +      
@@ -103,28 +114,36 @@ index 64f8018..071251a 100644
                resolve(resp);
              }
            };
-@@ -163,6 +188,20 @@ var ApiCalendar = class {
+@@ -163,6 +188,28 @@ var ApiCalendar = class {
        }
      });
    }
 +
-+  watchEvents(queryOptions, calendarId = this.calendar) {
-+        if (gapi) {
-+          return gapi.client.request({
-+           'path': '/calendar/v3/calendars/a6950e1b642d8663865fd2351d5107fae9e1537514f7e9d8b301364aa53d9568@group.calendar.google.com/events/watch',
-+            'method': 'POST',
-+            'body': queryOptions,
-+         });
-+        } else {
-+          console.error("Error: gapi not loaded");
-+          return false;
-+        }
++  async watchEvents(queryOptions, calendarId = this.calendar) {
++    try {
++      if (!gapi || !gapi.client) {
++        console.error("Error: gapi or gapi.client not loaded");
++        return false;
 +      }
++      
++      const response = await gapi.client.request({
++        'path': 'https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events/watch',
++        'method': 'POST',
++        'body': queryOptions,
++      });
++      
++      return response;
++    } catch (error) {
++      console.error('Error:', error.result ? error.result.error.message : error);
++      return false;
++    }
++  }
++
 +
    /**
     * Set the default attribute calendar
     * @param {string} newCalendar
-@@ -188,6 +227,7 @@ var ApiCalendar = class {
+@@ -188,6 +235,7 @@ var ApiCalendar = class {
      if (gapi) {
        const token = gapi.client.getToken();
        if (token !== null) {

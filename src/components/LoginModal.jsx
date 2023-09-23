@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Backdrop from "./Backdrop";
+import { VscDebugDisconnect } from "react-icons/vsc";
 
 const dropIn = {
 	hidden: {
@@ -22,59 +23,16 @@ const dropIn = {
 	},
 };
 
-const scalingCenter = {
-	hidden: {
-		opacity: 0,
-		transform: "scale(0)",
-	},
-	visible: {
-		opacity: 1,
-		transform: "scale(1)",
-		transition: {
-			duration: 1,
-			type: "spring",
-			damping: 25,
-			stiffness: 500,
-		},
-	},
-	exit: {
-		opacity: 0,
-		transform: "scale(0)",
-	},
+const LoginModal = ({ handleClose }) => {
+	<Backdrop>
+		<motion.div onClick={(e) => e.stopPropagation()} className="loginModal" variants={dropIn} initial="hidden" animate="visible" exit="exit">
+			<div className="modalHeader">
+				<VscDebugDisconnect />
+				<h1 className="modalTitle">Paramètres</h1>
+			</div>
+			<div className="modalBody"></div>
+		</motion.div>
+	</Backdrop>;
 };
 
-const Modal = ({ handleClose, type }) => {
-	return type === 0 ? (
-		<Backdrop onClick={handleClose}>
-			<motion.div
-				onClick={(e) => e.stopPropagation()}
-				className="modal"
-				variants={scalingCenter}
-				initial="hidden"
-				animate="visible"
-				exit="exit"
-			>
-				<p></p>
-				<button onClick={handleClose}>Close</button>
-			</motion.div>
-		</Backdrop>
-	) : (
-		<Backdrop onClick={handleClose}>
-			<motion.div
-				onClick={(e) => e.stopPropagation()}
-				className="modalParam"
-				variants={dropIn}
-				initial="hidden"
-				animate="visible"
-				exit="exit"
-			>
-				<div className="modalHeader">
-					<h1 className="modalTitle">Paramètres</h1>
-				</div>
-				<div className="modalBody"></div>
-			</motion.div>
-		</Backdrop>
-	);
-};
-
-export default Modal;
+export default LoginModal;

@@ -25,11 +25,7 @@ const calendarSlice = createSlice({
 		},
 		setCurrentDay: (state, action) => {
 			const newDay = action.payload;
-			const maxDaysInMonth = new Date(
-				state.currentYear,
-				state.currentMonth + 1,
-				0
-			).getDate();
+			const maxDaysInMonth = new Date(state.currentYear, state.currentMonth + 1, 0).getDate();
 
 			if (newDay < 1) {
 				state.currentDay = 1;
@@ -53,6 +49,5 @@ const calendarSlice = createSlice({
 	},
 });
 
-export const { setCurrentMonth, setCurrentDay, setCurrentYear } =
-	calendarSlice.actions;
+export const { setCurrentMonth, setCurrentDay, setCurrentYear } = calendarSlice.actions;
 export default calendarSlice.reducer;

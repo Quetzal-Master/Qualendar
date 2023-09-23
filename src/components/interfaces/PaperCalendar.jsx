@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { RiHomeGearFill, RiLoginBoxLine } from "react-icons/ri";
 import { monthsList } from "@/constants/dayMonth";
 import getUnsplashImage from "@/hooks/ImageUnsplash";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentMonth } from "@/stores/calendar/CalendarSlice";
-import { toggleIsLogged } from "../../stores/user/UserSlice";
+import { toggleIsLogged } from "@/stores/user/UserSlice";
+import { initializeCalendarApi } from "@/common/ApiCalendar.jsx";
 
 const dayEntranceAnimation = {
 	hidden: { opacity: 1, scale: 0 },
@@ -19,8 +20,14 @@ const dayEntranceAnimation = {
 	},
 };
 
-function PaperCalendar({ apiCalendar, divJours }) {
+function PaperCalendar({ divJours }) {
 	const dispatch = useDispatch();
+	const [apiCalendar, setApiCalendar] = useState(null);
+	useEffect(() => {
+		const api = initializeCalendarApi(dispatch);
+		setApiCalendar(api);
+	}, []);
+
 	const { currentMonth, currentYear } = useSelector((state) => state.calendar);
 	const { isLogged } = useSelector((state) => state.user);
 
