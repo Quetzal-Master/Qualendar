@@ -40,7 +40,7 @@ function Qualendar() {
 	useEventSource();
 
 	return (
-		<>
+		<div className={"overflow-hidden"}>
 			<ScrollContext.Provider value={scrollToCurrentMonth}>
 				{calendarMode === CalendarMode.MODERN ? <ModernCalendar setScrollToCurrentMonth={setScrollToCurrentMonth} /> : <PaperCalendar />}
 				{needRelog && (
@@ -54,7 +54,7 @@ function Qualendar() {
 				)}
 				<Navbar />
 			</ScrollContext.Provider>
-		</>
+		</div>
 	);
 }
 

@@ -242,16 +242,13 @@ function ModernCalendar({ setScrollToCurrentMonth }) {
                                     const date = new Date(year, monthMapping[monthName.toLowerCase()], 1);
                                     return (
                                         <motion.div
+                                            className={`${(
+                                                selectedDay !== null &&
+                                                isSameWeek(date, new Date(selectedDay.year, monthMapping[selectedDay.month.toLowerCase()], selectedDay.day)) &&
+                                                date.getMonth() === new Date(selectedDay.year, monthMapping[selectedDay.month.toLowerCase()], selectedDay.day).getMonth() &&
+                                                date.getFullYear() === new Date(selectedDay.year, monthMapping[selectedDay.month.toLowerCase()], selectedDay.day).getFullYear()
+                                            ) ? 'w-[6%]' : 'w-[13%]'}`}
                                             key={`empty-${i}`}
-                                            animate={{
-                                                width: (
-                                                    selectedDay !== null &&
-                                                    isSameWeek(date, new Date(selectedDay.year, monthMapping[selectedDay.month.toLowerCase()], selectedDay.day)) &&
-                                                    date.getMonth() === new Date(selectedDay.year, monthMapping[selectedDay.month.toLowerCase()], selectedDay.day).getMonth() &&
-                                                    date.getFullYear() === new Date(selectedDay.year, monthMapping[selectedDay.month.toLowerCase()], selectedDay.day).getFullYear()
-                                                ) ? '6%' : '13%'
-                                            }}
-                                            transition={{ width: { duration: 0.5, ease: "easeInOut" } }}
                                         ></motion.div>
                                     );
                                 })}
@@ -335,11 +332,7 @@ function ModernCalendar({ setScrollToCurrentMonth }) {
                                                     return { day, month: monthName, year }; // select the day if it's not the currently selected day
                                                 }
                                             })}
-                                            whileHover={{ scale: 1.1 }}
-                                            whileTap={{ scale: 0.9 }}
-                                            className={`flex flex-col justify-between ${isPublicHoliday ? 'bg-opacity-50 bg-accent'  :  'bg-opacity-10'} bg-primary shadow-date-card rounded-[50px] h-[14vh] overflow-hidden`}
-                                            animate={{ width: isSelected ? '55%' : (notSelected ? '6%' : '13%')}}
-                                            transition={{ width: { duration: 0.5, ease: "easeInOut" } }} // Add this line
+                                            className={`flex flex-col justify-between ${isPublicHoliday ? 'bg-opacity-50 bg-accent'  :  'bg-opacity-10'} bg-primary shadow-date-card rounded-[50px] h-[14vh] overflow-hidden ${isSelected ? 'w-[55%]' : (notSelected ? 'w-[6%]' : 'w-[13%]')}`}
                                             key={day}
                                         >
                                             { !isSelected && <>

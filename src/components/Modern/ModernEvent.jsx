@@ -125,7 +125,8 @@ export const ModernEventResume = ({ event }) => {
         day: 'numeric',
         timeZone: 'Europe/Paris'
     };
-    const formattedDate = new Intl.DateTimeFormat('fr-FR', dateOptions).format(event.date);
+    const formattedDate = new Intl.DateTimeFormat('fr-FR', dateOptions).format(startDate);
+    console.log(event);
     return (
         <motion.div
             whileHover={{ scale: 1.1 }}
