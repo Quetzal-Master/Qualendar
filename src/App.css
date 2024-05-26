@@ -3,12 +3,14 @@
 @import 'tailwindcss/utilities';
 
 html {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important;  /* Internet Explorer 10+ */
 }
 
 html::-webkit-scrollbar {
-  display: none; /* Webkit */
+  display: none !important; /* Webkit */
+  width: 0 !important;  /* Remove scrollbar space */
+  background: transparent !important; /* Optional: just to be safe */
 }
 
 .App {
