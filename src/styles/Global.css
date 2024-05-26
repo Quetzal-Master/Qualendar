@@ -459,3 +459,77 @@ body {
 .jaune {
   background-color: #fffda8 !important;
   color: black !important; }
+
+
+.event-rose {
+  fill: rgba(202, 105, 218);
+  stroke: rgba(202, 105, 218);
+}
+
+.event-blue {
+  fill: rgba(138, 178, 253);
+  stroke: rgba(138, 178, 253);
+}
+
+.event-green {
+  fill: rgba(151, 213, 151);
+  stroke: rgba(151, 213, 151);
+}
+
+.event-yellow {
+  fill: rgba(253, 228, 138);
+  stroke: rgba(253, 228, 138);
+}
+
+.event-default {
+  fill: none;
+}
+
+.background-rose {
+  background-color: rgba(202, 105, 218, 0.4);
+}
+
+.background-blue {
+  background-color: rgba(138, 178, 253, 0.4);
+}
+
+.background-green {
+  background-color: rgba(151, 213, 151, 0.4);
+}
+
+.background-yellow {
+  background-color: rgba(253, 228, 138, 0.4);
+}
+.color-circle {
+  @apply w-16 h-16 rounded-full relative;
+  background-color: transparent;
+  padding: 4px; /* Add this line */
+  box-sizing: border-box; /* Add this line */
+  background-clip: content-box; /* Add this line */
+}
+
+.color-circle::before {
+  @apply absolute inset-0 rounded-full;
+  content: '';
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+}
+
+.color-circle.rose {
+  background-color: rgba(202, 105, 218, 1);
+  box-shadow: 0 10px 20px rgba(202, 105, 218, 0.5);
+}
+
+.color-circle.blue {
+  background-color: rgba(138, 178, 253, 1);
+  box-shadow: 0 10px 20px rgba(138, 178, 253, 0.5);
+}
+
+.color-circle.green {
+  background-color: rgba(151, 213, 151, 1);
+  box-shadow: 0 10px 20px rgba(151, 213, 151, 0.5);
+}
+
+.color-circle.yellow {
+  background-color: rgba(253, 228, 138, 1);
+  box-shadow: 0 10px 20px rgba(253, 228, 138, 0.5);
+}

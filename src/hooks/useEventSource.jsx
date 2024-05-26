@@ -1,17 +1,38 @@
+// src/hooks/useEventSource.jsx
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
-import { initializeCalendarApi } from "@/common/ApiCalendar.jsx";
+import { initializeCalendarApi, fetchEvents } from "@/common/GoogleCalendarFacade.jsx";
+import { setEvents } from "@/stores/calendar/CalendarSlice";
 
-export default function useEventSource(callback) {
+export default function useEventSource() {
 	const dispatch = useDispatch();
 	const url = import.meta.env.VITE_BACKEND_URL;
 	const { gapiInitialized, isLogged } = useSelector((state) => state.user);
+	const { currentMonth, currentYear } = useSelector((state) => state.calendar);
 	const [apiCalendar, setApiCalendar] = useState(null);
+
 	useEffect(() => {
 		const api = initializeCalendarApi(dispatch);
 		setApiCalendar(api);
 	}, []);
+
+	const handleMessageReceived = (event) => {
+		if (gapiInitialized && isLogged) {
+			console.log(event.data);
+
+			if (event.data !== "heartbeat") {
+				const dateStart = new Date(currentYear-1, currentMonth);
+				const dateEnd = new Date(currentYear+1, currentMonth);
+
+				fetchEvents(apiCalendar, dateStart, dateEnd)
+					.then(items => dispatch(setEvents(items)))
+					.catch(err => console.error("Error fetching events:", err));
+			}
+		} else {
+			console.log("Api isn't loaded for the moment:", apiCalendar, "isLogged:", isLogged);
+		}
+	};
 
 	useEffect(() => {
 		let eventSource;
@@ -34,7 +55,7 @@ export default function useEventSource(callback) {
 					console.log("SSE connection established", event);
 				};
 
-				eventSource.onmessage = callback;
+				eventSource.onmessage = handleMessageReceived;
 
 				eventSource.onerror = (error) => {
 					console.error("EventSource failed:", error);

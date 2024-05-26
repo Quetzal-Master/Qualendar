@@ -31,3 +31,19 @@ export const getCalendarApi = () => {
 	}
 	return calendarApi;
 };
+
+export const fetchEvents = async (apiCalendar, dateStart, dateEnd) => {
+	try {
+		const response = await apiCalendar.listEvents({
+			timeMin: dateStart.toISOString(),
+			timeMax: dateEnd.toISOString(),
+			showDeleted: false,
+			maxResults: 1000,
+			orderBy: "updated",
+		});
+		return response.result.items;
+	} catch (error) {
+		console.error("Error fetching events:", error);
+		throw error;
+	}
+};

@@ -1,6 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
+import { initializeCalendarApi } from "@/common/GoogleCalendarFacade.jsx";
 
 const currentDate = new Date();
+
 
 const calendarSlice = createSlice({
 	name: "calendar",
@@ -8,6 +10,9 @@ const calendarSlice = createSlice({
 		currentMonth: currentDate.getMonth(),
 		currentDay: currentDate.getDate(),
 		currentYear: currentDate.getFullYear(),
+		events: [],
+		dayEvents: [],
+		selectedDay: null,
 	},
 	reducers: {
 		setCurrentMonth: (state, action) => {
@@ -46,8 +51,31 @@ const calendarSlice = createSlice({
 				state.currentDay = 1;
 			}
 		},
+		setEvents: (state, action) => {
+			state.events = action.payload;
+		},
+		setSelectedDay: (state, action) => {
+			state.selectedDay = action.payload;
+
+			// Fetch day events when selectedDay is updated
+			if (state.selectedDay !== null) {
+				const apiCalendar = initializeCalendarApi();
+				const date = new Date(state.currentYear, state.currentMonth, state.selectedDay + 1);
+				const dateEnd = new Date(state.currentYear, state.currentMonth, state.selectedDay + 2);
+				apiCalendar.listEvents({
+					timeMin: date.toISOString(),
+					timeMax: dateEnd.toISOString(),
+					showDeleted: true,
+					maxResults: 10,
+					orderBy: "updated",
+				})
+					.then(({ result }) => {
+						state.dayEvents = result.items;
+					});
+			}
+		},
 	},
 });
 
-export const { setCurrentMonth, setCurrentDay, setCurrentYear } = calendarSlice.actions;
+export const { setCurrentMonth, setCurrentDay, setCurrentYear, setEvents, setSelectedDay } = calendarSlice.actions;
 export default calendarSlice.reducer;
