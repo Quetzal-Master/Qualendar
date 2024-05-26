@@ -238,6 +238,7 @@ function ModernCalendar({ setScrollToCurrentMonth }) {
                                 <div className={'w-[13%] text-center'}>Dim</div>
                             </div>
                             <div className={'flex flex-row flex-wrap items-center gap-3 w-full pl-4'}>
+
                                 {Array(firstDayOfWeek).fill(null).map((_, i) => {
                                     const date = new Date(year, monthMapping[monthName.toLowerCase()], 1);
                                     return (
@@ -254,13 +255,6 @@ function ModernCalendar({ setScrollToCurrentMonth }) {
                                 })}
                                 {days.map(day => {
                                     const date = new Date(year, monthMapping[monthName.toLowerCase()], day);
-                                    const dateOptions = {
-                                        weekday: 'long',
-                                        month: 'long',
-                                        day: 'numeric',
-                                        timeZone: 'Europe/Paris'
-                                    };
-                                    const formattedDate = new Intl.DateTimeFormat('fr-FR', dateOptions).format(date);
                                     const isPublicHoliday = Object.values(publicHolidays).some((holiday) => holiday.getTime() === date.getTime());
                                     const isHoliday = holidays.some(holiday => {
                                         const startDate = new Date(holiday.startDate);
