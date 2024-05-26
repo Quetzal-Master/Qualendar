@@ -2,3 +2,8 @@
   for = "/*.js"
   [headers.values]
     Content-Type = "application/javascript"
+[build]
+  command = "npm install --legacy-peer-deps && npm run build"
+  publish = "build"
+[build.environment]
+  NODE_ENV = "production"
