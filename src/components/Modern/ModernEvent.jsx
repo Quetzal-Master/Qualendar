@@ -57,7 +57,7 @@ const ModernEvent = ({ event, status }) => {
                     </div>
                     <div className={'flex flex-col font-inter font-semibold items-start gap-0 w-[82%]'}>
                         <div className={'leading-4 font-quiksand w-full'}>{event.summary}</div>
-                        <div className={'leading-5 text-text-modern text-sm'}>{startTimeString} > {endTimeString}</div>
+                        <div className={'leading-5 text-text-modern text-sm'}>{startTimeString} &gt; {endTimeString}</div>
                     </div>
                 </div>
             }
@@ -106,7 +106,7 @@ export const ModernEventResume = ({ event }) => {
 
     // Get the SVG and typeName for the event
     const attendeeEmail = event.attendees && event.attendees[0] ? event.attendees[0].email : null;
-    const { Svg, SvgOnly, typeName } = getEventByType(attendeeEmail, colorClass);
+    const { SvgOnly, typeName } = getEventByType(attendeeEmail, colorClass);
 
     const startDate = new Date(event.start.dateTime);
     const startHours = startDate.getHours();
