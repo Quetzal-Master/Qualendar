@@ -203,7 +203,7 @@ function ModernCalendar({ setScrollToCurrentMonth }) {
                     <div className='font-montserrat font-bold text-primary text-6xl uppercase'>{currentTime}</div>
                     <WeatherInfoResume weatherForHour={weatherForHour}/>
                 </div>
-                <div className='w-full flex flex-col pl-8 h-[39%]'>
+                <div className='w-full flex flex-col pl-8 h-[39%] mt-[-15px]'>
                     <div className='font-montserrat font-extrabold text-text text-opacity-20 text-xl uppercase mb-1'>événement à venir</div>
                     <div className='flex justify-between w-full h-full'>
                     {getNextThreeEvents(events).map((event) => (
