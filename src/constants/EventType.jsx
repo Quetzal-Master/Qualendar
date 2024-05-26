@@ -6,6 +6,8 @@ import { ReactComponent as MaisonSvg } from '../assets/eventType/maison.svg';
 import { ReactComponent as BeauteSvg } from '../assets/eventType/beaute.svg';
 import { ReactComponent as ArgentSvg } from '../assets/eventType/argent.svg';
 import { ReactComponent as ReglageSvg } from '../assets/eventType/reglage.svg';
+import { ReactComponent as VoitureSvg } from '../assets/eventType/car.svg';
+import { ReactComponent as BirthdaySvg } from '../assets/eventType/birthday.svg';
 import { ReactComponent as DefaultSvg } from '../assets/eventType/default.svg';
 
 const getEventByType = (email, colorClass) => {
@@ -48,6 +50,16 @@ const getEventByType = (email, colorClass) => {
                 typeName = 'Argent';
                 Svg = <ArgentSvg className={`${colorClass}`} />;
                 SvgOnly = ArgentSvg;
+                break;
+            case 'voiture.qualendar':
+                typeName = 'Voiture';
+                Svg = <VoitureSvg className={`${colorClass}`} />;
+                SvgOnly = VoitureSvg;
+                break;
+            case 'anniversaire.qualendar':
+                typeName = 'Anniversaire';
+                Svg = <BirthdaySvg className={`${colorClass}`} />;
+                SvgOnly = BirthdaySvg;
                 break;
             case 'reglage.qualendar':
                 typeName = 'Reglage';

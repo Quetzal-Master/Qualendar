@@ -212,7 +212,7 @@ function ModernCalendar({ setScrollToCurrentMonth }) {
                     </div>
                 </div>
             </div>
-            <div className={"overflow-scroll flex flex-col  gap-16 w-full"}>
+            <div className={"overflow-scroll flex flex-col  gap-16 w-full overflow-hidden no-scrollbar"}>
                 {monthList.map((month, index) => {
                     const [monthName, year] = month.split(' ');
                     const publicHolidays = joursFeries(year);
@@ -223,7 +223,7 @@ function ModernCalendar({ setScrollToCurrentMonth }) {
                     if (firstDayOfWeek === -1) firstDayOfWeek = 6;
                     return (
                         <div
-                            className={'pt-[22%] flex flex-col text-text gap-4 w-full'}
+                            className={'pt-[22%] flex flex-col text-text gap-4 w-full no-scrollbar'}
                             key={index}
                             ref={el => monthRefs.current[index] = el} // Assign a ref to each month
                         >
